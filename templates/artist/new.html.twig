@@ -11,11 +11,9 @@
             {{ form_start(form) }}
             {{ form_widget(form) }}
             <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
+                <button type="submit" class="btn btn-primary">{{ button_label|default('Ajouter') }}</button>
             </div>
             {{ form_end(form) }}
-
-            <a href="{{ path('app_artist_index') }}">back to list</a>
 
         </div>
     </div>
