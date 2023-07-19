@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>City</th>
+                <th>Description</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ artist.id }}</td>
                 <td>{{ artist.name }}</td>
                 <td>{{ artist.city }}</td>
+                <td>{{ artist.description }}</td>
                 <td>
                     <a href="{{ path('app_artist_show', {'id': artist.id}) }}">show</a>
                     <a href="{{ path('app_artist_edit', {'id': artist.id}) }}">edit</a>
