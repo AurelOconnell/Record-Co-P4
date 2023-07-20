@@ -62,4 +62,9 @@ class Record
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getArtist() ? $this->getArtist()->getName() : '';
+    }
 }

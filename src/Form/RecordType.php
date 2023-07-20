@@ -6,6 +6,8 @@ use App\Entity\Record;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 
 class RecordType extends AbstractType
 {
@@ -13,7 +15,22 @@ class RecordType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('recordCover')
+            ->add('recordCover', FileType::class, [
+                'label' => 'Pochette album',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2024k',
+                        'mimeTypes' => [
+                            'image/png',
+                            'image/jpeg',
+                            'image/gif',
+                        ],
+                        'mimeTypesMessage' => 'Veuillez uploader un fichier PNG, JPEG ou GIF',
+                    ])
+                ],
+            ])
             ->add('artist')
         ;
     }
