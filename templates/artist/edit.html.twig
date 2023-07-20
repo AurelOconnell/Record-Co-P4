@@ -3,16 +3,18 @@
 {% block title %}Edit Artist{% endblock %}
 
 {% block body %}
-<h1 class="text-white">Edit Artist</h1>
-
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<div class="d-flex justify-content-between">
-    <button type="submit" class="btn btn-info">{{ button_label|default('Modifier artiste') }}</button>
+<h1 class="mt-3 text-center text-white">Modifier {{ artist.name }}</h1>
+<div class="d-flex justify-content-center text-white">
+    <div class="col-9 col-md-6">
+        <div class="p-2 my-5 shadow-lg rounded-2">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-info">{{ button_label|default('Modifier artiste') }}</button>
+            </div>
+            {{ form_end(form) }}
+            {{ include('artist/_delete_form.html.twig') }}
+        </div>
+    </div>
 </div>
-{{ form_end(form) }}
-
-<a href="{{ path('app_artist_index') }}">back to list</a>
-
-{{ include('artist/_delete_form.html.twig') }}
 {% endblock %}

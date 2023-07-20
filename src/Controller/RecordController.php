@@ -48,7 +48,11 @@ class RecordController extends AbstractController
 
             $recordRepository->save($record, true);
 
-            return $this->redirectToRoute('app_record_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute(
+                'app_artist_show',
+                ['id' => $record->getArtist()->getId()],
+                Response::HTTP_SEE_OTHER
+            );
         }
 
         return $this->render('record/new.html.twig', [

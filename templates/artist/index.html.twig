@@ -3,15 +3,15 @@
 {% block title %}Artist index{% endblock %}
 
 {% block body %}
-    <h1 class="text-white">Artist index</h1>
+    <h1 class="text-white">Artistes</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>City</th>
+                <th>Nom</th>
+                <th>Ville</th>
                 <th>Description</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -21,8 +21,8 @@
                 <td>{{ artist.city }}</td>
                 <td>{{ artist.description }}</td>
                 <td>
-                    <a href="{{ path('app_artist_show', {'id': artist.id}) }}">show</a>
-                    <a href="{{ path('app_artist_edit', {'id': artist.id}) }}">edit</a>
+                    <a href="{{ path('app_artist_show', {'id': artist.id}) }}">Voir artiste</a>
+                    <a href="{{ path('app_artist_edit', {'id': artist.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

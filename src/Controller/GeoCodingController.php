@@ -23,7 +23,7 @@ class GeoCodingController extends AbstractController
     #[Route('/coding/coord', name: 'app_geo_coord')]
     public function getGeocoding(Request $request): Response
     {
-        $city = $request->query->get('city');
+        $city = ($request->query->get('city'));
         $apiKey = $_ENV['GEO_TOKEN'];
 
         $apiUrl = 'https://api.api-ninjas.com/v1/geocoding?city=' . urlencode($city);

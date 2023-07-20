@@ -8,9 +8,9 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Title</th>
-                <th>RecordCover</th>
-                <th>actions</th>
+                <th>Titre</th>
+                <th>Pochette</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -19,8 +19,8 @@
                 <td>{{ record.title }}</td>
                 <td>{{ record.recordCover }}</td>
                 <td>
-                    <a href="{{ path('app_record_show', {'id': record.id}) }}">show</a>
-                    <a href="{{ path('app_record_edit', {'id': record.id}) }}">edit</a>
+                    <a href="{{ path('app_record_show', {'id': record.id}) }}">Voir album</a>
+                    <a href="{{ path('app_record_edit', {'id': record.id}) }}">Modifier</a>
                 </td>
             </tr>
         {% else %}

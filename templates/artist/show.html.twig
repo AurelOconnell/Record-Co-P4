@@ -3,45 +3,34 @@
 {% block title %}Artist{% endblock %}
 
 {% block body %}
-<h1 class="text-white">Artist</h1>
+<div class="container">
+    <div class="d-flex justify-content-start mt-3 mb-3">
+        <h1 class="text-white ms-3 me-3">{{ artist.name }}</h1>
+        <a class="btn btn-info m-2 shadow-lg text-white"
+            href="{{ path('app_record_new', { 'id': artist.id }) }}">Ajouter album</a>
+    </div>
+</div>
 
-<table class="table">
-    <tbody>
-        <tr>
-            <th>Nom</th>
-            <td>{{ artist.name }}</td>
-        </tr>
-        <tr>
-            <th>Ville d'origine</th>
-            <td>{{ artist.city }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ artist.description }}</td>
-        </tr>
-    </tbody>
-</table>
-
-<a class="btn btn-info m-2 shadow-lg text-white" href="{{ path('app_record_new', { 'id': artist.id }) }}">Ajouter album</a>
-
-{% if artist.album is not empty %}
-    <h2 class="text-white">Albums</h2>
-    <ul>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-2 justify-content-center row-cols-xl-3 g-2 mx-2">
+        {% if artist.album is not empty %}
         {% for album in artist.album %}
-            <li class="text-white">
-                {% if album.recordCover %}
-                    <img src="{{ asset('path/to/album/covers/' ~ album.recordCover) }}" alt="Album Cover">
-                {% else %}
-                    <span >Pas de pochette disponible</span>
-                {% endif %}
-                <br>
-                {{ album.title }}
-            </li>
+        <div class="col">
+            <div class="card h-100 shadow-lg p-2">
+                <div class="card-body d-flex flex-column">
+                    <h4 class="card-title fs-2">{{ album.title }}</h4>
+                    {% if album.recordCover %}
+                    <img src="{{ asset('uploads/images/recordCover/' ~ album.recordCover) }}" alt="Album Cover">
+                    {% else %}
+                    <span>Pas de pochette disponible</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
         {% endfor %}
-    </ul>
-{% else %}
-    <p class="text-white">Aucun album trouvé pour cet artiste.</p>
-{% endif %}
-
-{{ include('artist/_delete_form.html.twig') }}
+        {% else %}
+        <p class="text-white">Aucun album trouvé pour cet artiste.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
