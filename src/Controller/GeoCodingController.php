@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,9 +21,9 @@ class GeoCodingController extends AbstractController
     }
 
     #[Route('/coding/coord', name: 'app_geo_coord')]
-    public function getGeocoding(): Response
+    public function getGeocoding(Request $request): Response
     {
-        $city = 'clermont-ferrand';
+        $city = $request->query->get('city');
         $apiKey = $_ENV['GEO_TOKEN'];
 
         $apiUrl = 'https://api.api-ninjas.com/v1/geocoding?city=' . urlencode($city);
@@ -42,9 +44,14 @@ class GeoCodingController extends AbstractController
 
         // Handling the response based on the status code
         if ($statusCode === 200) {
-            return new Response($content);
+            $data = json_decode($content, true);
+            if (isset($data['lat']) && isset($data['lon'])) {
+                return new JsonResponse(['lat' => $data['lat'], 'lon' => $data['lon']]);
+            } else {
+                return new JsonResponse(['error' => 'Coordinates not found'], Response::HTTP_BAD_REQUEST);
+            }
         } else {
-            return new Response('Error: ' . $statusCode . ' ' . $content);
+            return new JsonResponse(['error' => $content], $statusCode);
         }
     }
 }
