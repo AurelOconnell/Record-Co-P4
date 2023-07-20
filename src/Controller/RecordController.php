@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Record;
 use App\Form\RecordType;
 use App\Repository\RecordRepository;
+use App\Service\FileUploader;
+use App\Service\ImageVerification;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,13 +24,28 @@ class RecordController extends AbstractController
     }
 
     #[Route('/new', name: 'app_record_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, RecordRepository $recordRepository): Response
-    {
+    public function new(
+        Request $request,
+        RecordRepository $recordRepository,
+        ImageVerification $imageVerification,
+        FileUploader $fileUploader
+    ): Response {
         $record = new Record();
         $form = $this->createForm(RecordType::class, $record);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $pictureFile = $form->get('recordCover')->getData();
+
+            if (!empty($pictureFile)) {
+                if (!$imageVerification->imageVerification($pictureFile)) {
+                    $this->addFlash('danger', 'Veuillez utiliser une image au format PNG, JPG ou JPEG');
+                } else {
+                    $pictureFilename = $fileUploader->upload($pictureFile);
+                    $record->setRecordCover($pictureFilename);
+                }
+            }
+
             $recordRepository->save($record, true);
 
             return $this->redirectToRoute('app_record_index', [], Response::HTTP_SEE_OTHER);
@@ -36,7 +53,7 @@ class RecordController extends AbstractController
 
         return $this->render('record/new.html.twig', [
             'record' => $record,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
