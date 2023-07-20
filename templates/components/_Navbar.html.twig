@@ -1,11 +1,14 @@
 <nav class="navbar bg-secondary">
     <div class="container-fluid px-0 d-flex flex-row justify-content-between align-items-center">
         <div>
-            <a href="{{ path('app_artist_index')}}">
+            <a href="{{ path('app_home')}}">
                 <img src="{{ asset('build/images/vinyle.png')}}" alt="logo" class="btn logo img-fluid">
             </a>
         </div>
-
-        <a class="btn btn-info m-2 shadow-lg text-white" href="{{ path('app_artist_new')}}">Nouvel artiste</a>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a class="btn btn-info m-2 shadow-lg text-white" href="{{ path('app_artist_new')}}">Nouvel artiste</a></li>
+            <li class="list-inline-item"><a class="btn text-white" href="{{ path('app_artist_index')}}">Artistes</a></li>
+            <li class="list-inline-item"><a class="btn text-white" href="{{ path('app_record_index')}}">Albums</a></li>
+        </ul>
     </div>
 </nav>

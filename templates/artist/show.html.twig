@@ -3,28 +3,26 @@
 {% block title %}Artist{% endblock %}
 
 {% block body %}
-    <h1>Artist</h1>
+<h1 class="text-white">Artist</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Nom</th>
-                <td>{{ artist.name }}</td>
-            </tr>
-            <tr>
-                <th>Ville d'origine</th>
-                <td>{{ artist.city }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ artist.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+<table class="table">
+    <tbody>
+        <tr>
+            <th>Nom</th>
+            <td>{{ artist.name }}</td>
+        </tr>
+        <tr>
+            <th>Ville d'origine</th>
+            <td>{{ artist.city }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ artist.description }}</td>
+        </tr>
+    </tbody>
+</table>
 
-    <a href="{{ path('app_artist_edit', {'id': artist.id}) }}">edit</a>
+<a class="btn btn-info m-2 shadow-lg text-white" href="">Ajouter album</a>
 
-    <a class="btn btn-info m-2 shadow-lg text-white" href="">Ajouter album</a>
-
-    {{ include('artist/_delete_form.html.twig') }}
+{{ include('artist/_delete_form.html.twig') }}
 {% endblock %}

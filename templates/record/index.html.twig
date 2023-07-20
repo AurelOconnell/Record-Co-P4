@@ -3,12 +3,11 @@
 {% block title %}Record index{% endblock %}
 
 {% block body %}
-    <h1>Record index</h1>
+    <h1 class="text-white">Albums</h1>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>Title</th>
                 <th>RecordCover</th>
                 <th>actions</th>
@@ -17,7 +16,6 @@
         <tbody>
         {% for record in records %}
             <tr>
-                <td>{{ record.id }}</td>
                 <td>{{ record.title }}</td>
                 <td>{{ record.recordCover }}</td>
                 <td>
