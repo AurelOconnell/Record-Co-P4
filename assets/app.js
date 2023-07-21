@@ -23,12 +23,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
 }).addTo(myMap);
 
 var artistsData = {
-    "11": {"name": "Led Zeppelin",  "lat": 51.50685034958066, "lon": -0.12563124287429342 },
-    "12": {"name": "Kyuss", "lat": 33.832684271178856, "lon": -116.54060105263638 },
-    "6": {"name": "Nirvana", "lat": 47.60562166337458, "lon": -122.32695829876475 },
-    "7": {"name": "Noir Désir", "lat": 44.83788806747539, "lon": -0.5777751973353323 },
-    "9": {"name": "The Beatles", "lat": 53.406041018478284, "lon": -2.982041514635397 },
+    "11": { "name": "Led Zeppelin", "lat": 51.50685034958066, "lon": -0.12563124287429342 },
+    "12": { "name": "Kyuss", "lat": 33.832684271178856, "lon": -116.54060105263638 },
+    "6": { "name": "Nirvana", "lat": 47.60562166337458, "lon": -122.32695829876475 },
+    "7": { "name": "Noir Désir", "lat": 44.83788806747539, "lon": -0.5777751973353323 },
+    "9": { "name": "The Beatles", "lat": 53.406041018478284, "lon": -2.982041514635397 },
 }
+
+var artistsName = {};
 
 for (var artistId in artistsData) {
     var artist = artistsData[artistId];
@@ -38,16 +40,22 @@ for (var artistId in artistsData) {
     marker.bindPopup("<h4>" + link + "</h4>");
 }
 
-function getCoordinates(cityName, artistName) {
+function getCoordinates(cityName, artistName, artistId) {
     $.ajax({
         url: '{{ path("app_geo_coord") }}',
         method: 'GET',
         data: { city: cityName },
         success: function (response) {
-            var coordinates = JSON.parse(response);
-            if (coordinates && coordinates.lat && coordinates.lon) {
-                artistsName[artistName] = { lat: coordinates.lat, lon: coordinates.lon };
-                var marker = L.marker([coordinates.lat, coordinates.lon]).addTo(myMap);
+            if (response.city && response.lat && response.lon) {
+                artistsData[artistId] = {
+                    name: artistName,
+                    lat: response.lat,
+                    lon: response.lon
+                };
+                
+                myMap.setView([response.lat, response.lon], 4);
+
+                var marker = L.marker([response.lat, response.lon]).addTo(myMap);
                 marker.bindPopup("<h4>" + artistName + "</h4>");
             } else {
                 alert("Impossible de récupérer les coordonnées pour la ville spécifiée.");
@@ -59,13 +67,16 @@ function getCoordinates(cityName, artistName) {
     });
 }
 
-$("#addArtistButton").on('click', function () {
-    var cityName = $("artist_city").val();
-    var artistName = $("artist_name").val();
+$("#addArtistButton").on('click', function (event) {
+    event.preventDefault();
 
-    if (cityName && artistName) {
-        getCoordinates(cityName, artistName);
+    var cityName = $("#artist_city").val();
+    var artistName = $("#artist_name").val();
+    var artistId = $("#artist_id").val();
+
+    if (cityName && artistName && artistId) {
+        getCoordinates(cityName, artistName, artistId);
     } else {
-        alert("Veuillez saisir le nom de l'artiste et la ville d'origine.");
+        alert("Veuillez saisir le nom de l'artiste, l'ID de l'artiste et la ville d'origine.");
     }
 });

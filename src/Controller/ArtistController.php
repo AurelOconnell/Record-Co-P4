@@ -31,7 +31,7 @@ class ArtistController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $artistRepository->save($artist, true);
 
-            return $this->redirectToRoute('app_artist_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_artist_show', ['id' => $artist->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('artist/new.html.twig', [
