@@ -28,6 +28,7 @@ var artistsData = {
     "6": { "name": "Nirvana", "lat": 47.60562166337458, "lon": -122.32695829876475 },
     "7": { "name": "Noir Désir", "lat": 44.83788806747539, "lon": -0.5777751973353323 },
     "9": { "name": "The Beatles", "lat": 53.406041018478284, "lon": -2.982041514635397 },
+    "21": { "name": "Mark Lanegan", "lat": 46.997508212030965, "lon": -120.54798246555816 },
 }
 
 var artistsName = {};
@@ -38,6 +39,9 @@ for (var artistId in artistsData) {
     var marker = L.marker([artist.lat, artist.lon])
         .addTo(myMap);
     marker.bindPopup("<h4>" + link + "</h4>");
+
+    // Store the marker in the artistsName object
+    artistsName[artistId] = marker;
 }
 
 function getCoordinates(cityName, artistName, artistId) {
@@ -52,11 +56,18 @@ function getCoordinates(cityName, artistName, artistId) {
                     lat: response.lat,
                     lon: response.lon
                 };
-                
-                myMap.setView([response.lat, response.lon], 4);
 
-                var marker = L.marker([response.lat, response.lon]).addTo(myMap);
-                marker.bindPopup("<h4>" + artistName + "</h4>");
+                // Update or add a marker for the artist
+                if (artistsName[artistId]) {
+                    artistsName[artistId].setLatLng([response.lat, response.lon]);
+                    artistsName[artistId].getPopup().setContent("<h4>" + artistName + "</h4>");
+                } else {
+                    var marker = L.marker([response.lat, response.lon]).addTo(myMap);
+                    marker.bindPopup("<h4>" + artistName + "</h4>");
+                    artistsName[artistId] = marker;
+                }
+
+                myMap.setView([response.lat, response.lon], 4);
             } else {
                 alert("Impossible de récupérer les coordonnées pour la ville spécifiée.");
             }

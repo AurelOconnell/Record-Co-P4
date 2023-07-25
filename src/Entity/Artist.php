@@ -27,6 +27,12 @@ class Artist
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $lat = null;
+
+    #[ORM\Column(type: 'float', nullable: true)]
+    private ?float $lon = null;
+
     public function __construct()
     {
         $this->album = new ArrayCollection();
@@ -105,5 +111,29 @@ class Artist
     public function __toString()
     {
         return $this->getName();
+    }
+
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    public function setLat(?float $lat): self
+    {
+        $this->lat = $lat;
+
+        return $this;
+    }
+
+    public function getLon(): ?float
+    {
+        return $this->lon;
+    }
+
+    public function setLon(?float $lon): self
+    {
+        $this->lon = $lon;
+
+        return $this;
     }
 }

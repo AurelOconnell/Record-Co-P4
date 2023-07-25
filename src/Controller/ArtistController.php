@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\Artist;
 use App\Form\ArtistType;
 use App\Repository\ArtistRepository;
+use App\Service\GeocodingService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/artist')]
@@ -22,21 +25,38 @@ class ArtistController extends AbstractController
     }
 
     #[Route('/new', name: 'app_artist_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ArtistRepository $artistRepository): Response
-    {
+    public function new(
+        Request $request,
+        GeocodingService $geocodingService,
+        EntityManagerInterface $entityManager
+    ): Response {
         $artist = new Artist();
         $form = $this->createForm(ArtistType::class, $artist);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $artistRepository->save($artist, true);
+            $city = $form->get('city')->getData();
+            // dd($city);
+
+            $coordinates = $geocodingService->getCoordinates($city);
+            // dd($coordinates);
+
+            if ($coordinates === null) {
+                throw new BadRequestHttpException('Coordinates not found for the provided city : ' . $city . '.');
+            }
+
+            $artist->setLat($coordinates['lat']);
+            $artist->setLon($coordinates['lon']);
+
+            $entityManager->persist($artist);
+            $entityManager->flush();
 
             return $this->redirectToRoute('app_artist_show', ['id' => $artist->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('artist/new.html.twig', [
             'artist' => $artist,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
