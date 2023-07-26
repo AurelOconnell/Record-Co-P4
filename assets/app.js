@@ -31,8 +31,6 @@ var artistsData = {
     "21": { "name": "Mark Lanegan", "lat": 46.997508212030965, "lon": -120.54798246555816 },
 }
 
-var artistsName = {};
-
 for (var artistId in artistsData) {
     var artist = artistsData[artistId];
     var link = "<a href='/artist/" + encodeURIComponent(artistId) + "'>" + artist.name + "</a>";
