@@ -1,5 +1,11 @@
 # Project 3 - Starter Kit - Symfony
 
+## API & Libraries
+https://api-ninjas.com/api/geocoding
+https://leafletjs.com/
+
+Thanks to them for their work
+
 ## Presentation
 
 This starter kit is here to easily start a repository for Wild Code School students.
