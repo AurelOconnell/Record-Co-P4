@@ -1,5 +1,3 @@
-# Project 3 - Starter Kit - Symfony
-
 ## API & Libraries
 
 To get latitude and longitude coordinates
