@@ -2,10 +2,9 @@
 
 namespace App\Controller;
 
+use App\Repository\ArtistRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -21,37 +20,21 @@ class GeoCodingController extends AbstractController
     }
 
     #[Route('/coding/coord', name: 'app_geo_coord')]
-    public function getGeocoding(Request $request): Response
+    public function getGeocoding(ArtistRepository $artistRepository): JsonResponse
     {
-        $city = ($request->query->get('city'));
-        $apiKey = $_ENV['GEO_TOKEN'];
+        $artists = $artistRepository->findAll();
 
-        $apiUrl = 'https://api.api-ninjas.com/v1/geocoding?city=' . urlencode($city);
-
-        // Creating the HTTP client
-        $httpClient = HttpClient::create();
-
-        // Making the GET request with headers
-        $response = $httpClient->request('GET', $apiUrl, [
-            'headers' => [
-                'X-Api-Key' => $apiKey,
-            ],
-        ]);
-
-        // Getting the response status code and content
-        $statusCode = $response->getStatusCode();
-        $content = $response->getContent();
-
-        // Handling the response based on the status code
-        if ($statusCode === 200) {
-            $data = json_decode($content, true);
-            if (isset($data['lat']) && isset($data['lon'])) {
-                return new JsonResponse(['lat' => $data['lat'], 'lon' => $data['lon']]);
-            } else {
-                return new JsonResponse(['error' => 'Coordinates not found'], Response::HTTP_BAD_REQUEST);
-            }
-        } else {
-            return new JsonResponse(['error' => $content], $statusCode);
+        $responseData = [];
+        foreach ($artists as $artist) {
+            $responseData[] = [
+                'id' => $artist->getId(),
+                'name' => $artist->getName(),
+                'city' => $artist->getCity(),
+                'latitude' => $artist->getLat(),
+                'longitude' => $artist->getLon(),
+            ];
         }
+
+        return new JsonResponse($responseData);
     }
 }
