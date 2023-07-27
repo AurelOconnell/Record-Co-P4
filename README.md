@@ -1,7 +1,11 @@
 # Project 3 - Starter Kit - Symfony
 
 ## API & Libraries
+
+To get latitude and longitude coordinates
 https://api-ninjas.com/api/geocoding
+
+For the OpenStreetMap
 https://leafletjs.com/
 
 Thanks to them for their work
